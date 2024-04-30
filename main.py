@@ -44,14 +44,56 @@ def main():
     
     get_files_with_token(creds)
  
+files = [
+    {"folder_id": '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy',"voice_id": 'nPczCjzI2devNBz1zQrb'},
+    {"folder_id": '1zwBP6-XVRArSd9HROZu9ys0cdU8Qt1mm',"voice_id": '29vD33N1CtxCmqQRPOHJ'}, 
+    {"folder_id": '1-5YCtH_Q71QFLb6za9cRBOZNVr0ZY633',"voice_id": '2EiwWnXFnvU5JabPnv8n'}, 
+    {"folder_id": '1-2OTj5ENeyT_p-ZqDGoc3eOCC1vSjg5X',"voice_id": '5Q0t7uMcjvnagumLfvZi'}, 
 
-        
+    {"folder_id": '1-Un7hubsPlU2sp2QwDTC0EBDqCdxqR_q',"voice_id": 'CYw3kZ02Hs0563khs1Fj'},
+    {"folder_id": '1-CoBSqE2nJq5bCqLCTnRSUqKxtZpPTEv',"voice_id": 'D38z5RcWu1voky8WS1ja'}, 
+    {"folder_id": '1-2H2laHvlFOJmSvj5FyzoOQTkBWf2rxt',"voice_id": 'EXAVITQu4vr4xnSDxMaL'}, 
+    {"folder_id": '1-EbULlxhI5AHDA--o8tGJQtOm4CnjhZL',"voice_id": 'ErXwobaYiN019PkySvjV'}, 
 
-def get_files_with_token(creds, next_page_token=None):
+    {"folder_id": '1-Q6lR96uBdattS3LA-SqcmZMsmDztmvE',"voice_id": 'GBv7mTt0atIp3Br8iCZE'},
+    {"folder_id": '1-QCwp5YyomDAAcBz8gi2iy6IkQX1AuPL',"voice_id": 'IKne3meq5aSn9XLyUdCD'}, 
+    {"folder_id": '1-ePv2Y7vxkFR72mXaq5EI38PFx1PJx07',"voice_id": 'JBFqnCBsd6RMkjVDRZzb'}, 
+    {"folder_id": '1-KLATa5WWDnyaIzlkFA2HusaAiaOIlur',"voice_id": 'LcfcDJNUP1GQjkzn1xUU'}, 
+
+    {"folder_id": '1-bYVEhwq1aL5DS6_os_9aZKBIgEPEtkT',"voice_id": 'MF3mGyEYCl7XYWbV9V6O'},
+    {"folder_id": '1-cLx5N0V1PstOJ9O6MGdIMKr0_75jUdY',"voice_id": 'N2lVS1w4EtoT3dr4eOWO'}, 
+    {"folder_id": '10FREupuC1uUpPqhXbGnASrfpVQLx7tKR',"voice_id": 'ODq5zmih8GrVes37Dizd'}, 
+    {"folder_id": '1-catZnOFofrvWqQVsZc5zzKpq8U_tlWQ',"voice_id": 'oWAxZDx7w5VEj9dCyTzz'}, 
+
+
+    {"folder_id": '1-ihdzoePuo3Oa_PZfTRji75m_aCyi6Xx',"voice_id": 'onwK4e9ZLuTAKqWW03F9'},
+    {"folder_id": '1-yOj19CuUCnjbk-u489155iG1d1Ei7tz',"voice_id": 'pFZP5JQG7iQjIQuC4Bku'}, 
+    {"folder_id": '10UczBeUAY6bKYeC5H6AY7CwXbAX5abX3',"voice_id": 'pMsXgVXv3BLzUgSXRplE'}, 
+    {"folder_id": '1-v-ldzm2Mc8cCeB4w3RI8mpPXKojF2Za',"voice_id": 'pNInz6obpgDQGcFmaJgB'}, 
+
+    {"folder_id": '1-n0C54rK1_KY-3YSO6fZXLHO5ZNT0LTk',"voice_id": 'piTKgcLEGmPE4e6mEKli'},
+    {"folder_id": '10LLZParvYouO3xl6mZ4ssp5OXTYPpjzg',"voice_id": 'pqHfZKP75CvOlQylNhV4'}, 
+    {"folder_id": '10fxhS-phWaC_dJIQrc1D0DR6Y54sRRS7',"voice_id": 't0jbNlBVZ17f02VDIeMI'}, 
+    {"folder_id": '10690hPcStjQEKq2hwLPX-Mxnv6C53-2N',"voice_id": 'yoZ06aMxZJJ28mfd3POQ'}, 
+
+    {"folder_id": '10AAZ5VzSJ0F13iaidGjjpzIV4EsdII45',"voice_id": 'z9fAnlkpzviPz146aGWa'}, 
+    {"folder_id": '1vvA6aiAkewriSlTzAmEBjtUtJvNsBoxg-Mxnv6C53-2N',"voice_id": '21m00Tcm4TlvDq8ikWAM'}, 
+    {"folder_id": '1v-14XQO_7mUC99vA8zUBpxQB9TpGXXVR',"voice_id": 'AZnzlk1XvdvUeBnXmlld'}, 
+
+
+]
+
+def loop_get_files(creds):
+    for file in files:
+        folder_id = file["folder_id"]
+        voice_id = file["voice_id"]
+
+        get_files_with_token(creds, folder_id, voice_id)
+
+
+def get_files_with_token(creds,folder_id, voice_id, next_page_token=None):
     try:
         service = build("drive", "v3", credentials=creds)
-        folder_id = '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy'
-        voice_id = 'nPczCjzI2devNBz1zQrb'
         query = f"'{folder_id}' in parents"
         results = None
         if next_page_token:
