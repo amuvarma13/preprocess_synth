@@ -45,15 +45,35 @@ def main():
         folder_id = '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy'
         voice_id = 'nPczCjzI2devNBz1zQrb'
         query = f"'{folder_id}' in parents"
-        results = service.files().list(q=query, pageSize=100, fields="nextPageToken, files(id, name)").execute()
-        items = results.get("files", [])
 
-        if not items:
+        # Initialize an empty list to store all files
+        all_files = []
+
+        # Make initial request to retrieve files
+        page_token = None
+        while True:
+            results = service.files().list(
+                q=query,
+                pageSize=100,
+                fields="nextPageToken, files(id, name)",
+                pageToken=page_token
+            ).execute()
+
+            # Get files from the current page and add them to the list
+            items = results.get("files", [])
+            all_files.extend(items)
+
+            # Check if there are more pages
+            page_token = results.get('nextPageToken')
+            if not page_token:
+                break
+
+        if not all_files:
             print("No files found.")
             return
 
         with ThreadPoolExecutor(max_workers=20) as executor:
-            future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in items}
+            future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in all_files}
             wav_count = 0
             for future in concurrent.futures.as_completed(future_to_file):
                 filename = future.result()
