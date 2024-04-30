@@ -1,6 +1,5 @@
 import os
 from phonemizer import phonemize
-from phonemizer.backend import EspeakBackend
 
 directory = 'outputs/29vD33N1CtxCmqQRPOHJ'
 
