@@ -112,7 +112,7 @@ def get_files_with_token(creds,folder_id, voice_id,wav_count, next_page_token=No
 
         with ThreadPoolExecutor(max_workers=10) as executor:
             future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in items}
-            wav_count = 0
+            
             for future in concurrent.futures.as_completed(future_to_file):
                 filename = future.result()
                 if filename:
