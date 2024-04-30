@@ -1,7 +1,12 @@
 import os
 from phonemizer import phonemize
+import random
 
 directory = 'outputs/nPczCjzI2devNBz1zQrb'
+
+
+# Generate a random 4-digit number over 1000
+speaker_id = random.randint(1001, 9999)
 
 
 def find_wavs_with_non_empty_txt(directory):
@@ -82,4 +87,14 @@ def phonemize_texts(texts, language='en-us'):
 
 
 p_txts = phonemize_texts(texts)
-print(f'Phonemized {len(p_txts)} texts')
+# Create a .txt file with the required format
+with open(f'txts/{speaker_id}.txt', 'w', encoding='utf-8') as file:
+    for file_root, p_txt in zip(all_files, p_txts):
+        # Construct each line as wav file name, phonemized text, and speaker_id
+        line = f"{file_root}.wav|{p_txt}|{speaker_id}\n"
+        file.write(line)
+
+print(f"Output file created: outputs/{speaker_id}.txt")
+
+
+
