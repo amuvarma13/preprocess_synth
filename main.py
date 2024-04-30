@@ -90,10 +90,10 @@ def loop_get_files(creds):
 
         print(f'starting {voice_id}')
 
-        get_files_with_token(creds, folder_id, voice_id)
+        get_files_with_token(creds, folder_id, 0, voice_id)
 
 
-def get_files_with_token(creds,folder_id, voice_id, next_page_token=None):
+def get_files_with_token(creds,folder_id, voice_id,wav_count, next_page_token=None):
     try:
         service = build("drive", "v3", credentials=creds)
         query = f"'{folder_id}' in parents"
@@ -120,7 +120,7 @@ def get_files_with_token(creds,folder_id, voice_id, next_page_token=None):
                     print(f"Downloaded {wav_count} number of files")
 
         if wav_count > 0:
-            get_files_with_token(creds,folder_id, voice_id, token, )
+            get_files_with_token(creds,folder_id, voice_id, wav_count, token, )
 
     except HttpError as error:
         print(f"An error occurred: {error}")
