@@ -10,7 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define the output directory and make sure it exists
 output_directory = "outputs"
-page_size = 100
+page_size = 999
 if not os.path.exists(output_directory):
     os.makedirs(output_directory)
 
