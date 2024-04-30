@@ -45,7 +45,6 @@ def main():
     loop_get_files(creds)
  
 files = [
-    {"folder_id": '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy',"voice_id": 'nPczCjzI2devNBz1zQrb'},
     {"folder_id": '1zwBP6-XVRArSd9HROZu9ys0cdU8Qt1mm',"voice_id": '29vD33N1CtxCmqQRPOHJ'}, 
     {"folder_id": '1-5YCtH_Q71QFLb6za9cRBOZNVr0ZY633',"voice_id": '2EiwWnXFnvU5JabPnv8n'}, 
     {"folder_id": '1-2OTj5ENeyT_p-ZqDGoc3eOCC1vSjg5X',"voice_id": '5Q0t7uMcjvnagumLfvZi'}, 
