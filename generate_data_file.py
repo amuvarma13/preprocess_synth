@@ -1,7 +1,7 @@
 import os
 from phonemizer import phonemize
 
-directory = 'outputs/29vD33N1CtxCmqQRPOHJ'
+directory = 'outputs/nPczCjzI2devNBz1zQrb'
 
 
 def find_wavs_with_non_empty_txt(directory):
