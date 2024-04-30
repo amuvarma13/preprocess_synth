@@ -42,7 +42,7 @@ def main():
         with open("token.json", "w") as token:
             token.write(creds.to_json())
     
-    get_files_with_token(creds)
+    loop_get_files(creds)
  
 files = [
     {"folder_id": '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy',"voice_id": 'nPczCjzI2devNBz1zQrb'},
