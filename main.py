@@ -85,8 +85,11 @@ files = [
 
 def loop_get_files(creds):
     for file in files:
+
         folder_id = file["folder_id"]
         voice_id = file["voice_id"]
+
+        print(f'starting {voice_id}')
 
         get_files_with_token(creds, folder_id, voice_id)
 
