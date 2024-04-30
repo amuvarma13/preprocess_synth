@@ -121,7 +121,7 @@ def get_files_with_token(creds,folder_id, voice_id, next_page_token=None):
                     print(f"Downloaded {filename}")
 
         if wav_count > 0:
-            get_files_with_token(creds, token)
+            get_files_with_token(creds,folder_id, voice_id, token, )
 
     except HttpError as error:
         print(f"An error occurred: {error}")
