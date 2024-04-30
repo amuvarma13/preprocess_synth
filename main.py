@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define the output directory and make sure it exists
 output_directory = "outputs"
+page_size = 100
 if not os.path.exists(output_directory):
     os.makedirs(output_directory)
 
@@ -26,6 +27,7 @@ def download_file_subprocess(item, voice_id):
         print(f"Failed to download {item['name']}: {e}")
         return None
 
+count_wavs = 0
 def main():
 
     creds = None
@@ -39,41 +41,33 @@ def main():
             creds = flow.run_local_server(port=0)
         with open("token.json", "w") as token:
             token.write(creds.to_json())
+    
+    get_files_with_token(creds)
+ 
 
+        
+
+def get_files_with_token(creds, next_page_token=None):
     try:
         service = build("drive", "v3", credentials=creds)
         folder_id = '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy'
         voice_id = 'nPczCjzI2devNBz1zQrb'
         query = f"'{folder_id}' in parents"
+        results = None
+        if next_page_token:
+            results = service.files().list(q=query, pageSize=page_size, fields="nextPageToken, files(id, name)", pageToken=next_page_token).execute()
+        else:
+            results = service.files().list(q=query, pageSize=page_size, fields="nextPageToken, files(id, name)").execute()
+        items = results.get("files", [])
+        token = results.get("nextPageToken")
+        print(f"Found {len(items)} files in the folder", "token is", token)
 
-        # Initialize an empty list to store all files
-        all_files = []
-
-        # Make initial request to retrieve files
-        page_token = None
-        while True:
-            results = service.files().list(
-                q=query,
-                pageSize=100,
-                fields="nextPageToken, files(id, name)",
-                pageToken=page_token
-            ).execute()
-
-            # Get files from the current page and add them to the list
-            items = results.get("files", [])
-            all_files.extend(items)
-
-            # Check if there are more pages
-            page_token = results.get('nextPageToken')
-            if not page_token:
-                break
-
-        if not all_files:
+        if not items:
             print("No files found.")
             return
 
         with ThreadPoolExecutor(max_workers=20) as executor:
-            future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in all_files}
+            future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in items}
             wav_count = 0
             for future in concurrent.futures.as_completed(future_to_file):
                 filename = future.result()
@@ -81,7 +75,9 @@ def main():
                     wav_count += 1
                     print(f"Downloaded {filename}")
 
-        print(f"Total .wav files downloaded: {wav_count}")
+        if wav_count > 0:
+            get_files_with_token(creds, token)
+
     except HttpError as error:
         print(f"An error occurred: {error}")
 
