@@ -52,7 +52,7 @@ def main():
             print("No files found.")
             return
 
-        with ThreadPoolExecutor(max_workers=5) as executor:
+        with ThreadPoolExecutor(max_workers=20) as executor:
             future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in items}
             wav_count = 0
             for future in concurrent.futures.as_completed(future_to_file):
