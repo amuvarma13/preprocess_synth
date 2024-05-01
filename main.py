@@ -50,20 +50,23 @@ def main():
 def get_files_with_token(creds, next_page_token=None):
     try:
         service = build("drive", "v3", credentials=creds)
-        folder_id = '13GYJl3uCGqpTvSN9nCBBhFgvHvxd2Swy'
-        voice_id = 'nPczCjzI2devNBz1zQrb'
+        folder_id = '10UczBeUAY6bKYeC5H6AY7CwXbAX5abX3'
+        voice_id = 'pMsXgVXv3BLzUgSXRplE'
         query = f"'{folder_id}' in parents"
-        results = None
-        if next_page_token:
-            results = service.files().list(q=query, pageSize=page_size, fields="nextPageToken, files(id, name)", pageToken=next_page_token).execute()
-        else:
-            results = service.files().list(q=query, pageSize=page_size, fields="nextPageToken, files(id, name)").execute()
+        results = service.files().list(
+            q=query,
+            pageSize=page_size,
+            fields="nextPageToken, files(id, name)",
+            pageToken=next_page_token
+        ).execute()
+
         items = results.get("files", [])
         token = results.get("nextPageToken")
-        print(f"Found {len(items)} files in the folder", "token is", token)
+
+        print(f"Found {len(items)} files in the folder. Next token: {token}")
 
         if not items:
-            print("No files found.")
+            print("No more files found. Exiting.")
             return
 
         with ThreadPoolExecutor(max_workers=20) as executor:
@@ -75,8 +78,11 @@ def get_files_with_token(creds, next_page_token=None):
                     wav_count += 1
                     print(f"Downloaded {filename}")
 
-        if wav_count > 0:
+        if token and wav_count > 0:
+            print("Fetching next batch of files.")
             get_files_with_token(creds, token)
+        else:
+            print("All files processed. Exiting.")
 
     except HttpError as error:
         print(f"An error occurred: {error}")
