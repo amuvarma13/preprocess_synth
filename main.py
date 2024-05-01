@@ -8,6 +8,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from concurrent.futures import ThreadPoolExecutor
+page_size = 999
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Download files from Google Drive based on folder ID and voice ID.")
@@ -27,7 +28,7 @@ def download_file_subprocess(item, voice_id):
 
 def main(folder_id, voice_id):
     output_directory = "outputs"
-    page_size = 999
+    
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
