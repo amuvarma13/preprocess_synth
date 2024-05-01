@@ -42,3 +42,10 @@ python generate_train_and_val.py
 
 Step 5 Upload all wav files to storage
 
+Run the script to upload all files flatly to cloud storage:
+
+```
+python upload_wavs.py
+```
+
+

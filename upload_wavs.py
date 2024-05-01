@@ -23,7 +23,7 @@ def upload_files(bucket_name, source_folder):
                 files_to_upload.append((subdir, filename))
 
     # Create a ProcessPoolExecutor for managing concurrent uploads
-    with ProcessPoolExecutor(max_workers=10) as executor:
+    with ProcessPoolExecutor(max_workers=100) as executor:
         futures = {executor.submit(upload_file, bucket_name, subdir, filename): filename
                    for subdir, filename in files_to_upload}
 
