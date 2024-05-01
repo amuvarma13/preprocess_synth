@@ -17,6 +17,7 @@ You can run rename_wavs.py on a specific directory by
 python rename_wavs.py dirname
 ```
 
+
 Step 3 Generate the data files
 
 Now we need to check which wav files are good and can be phonemized and generate data files for these

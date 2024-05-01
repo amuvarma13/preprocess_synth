@@ -70,4 +70,21 @@ def get_files_with_token(creds, folder_id, voice_id, next_page_token=None):
         with ThreadPoolExecutor(max_workers=20) as executor:
             future_to_file = {executor.submit(download_file_subprocess, item, voice_id): item for item in items}
             wav_count = 0
-            for future in concurrent.futures.as_completed(future_to_f
+            for future in concurrent.futures.as_completed(future_to_file):
+                filename = future.result()
+                if filename:
+                    wav_count += 1
+                    print(f"Downloaded {filename}")
+
+        if token and wav_count > 0:
+            print("Fetching next batch of files.")
+            # get_files_with_token(creds, folder_id, voice_id, token)
+        else:
+            print("All files processed. Exiting.")
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args.folder_id, args.voice_id)

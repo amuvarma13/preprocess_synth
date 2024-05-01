@@ -36,6 +36,6 @@ def upload_files(bucket_name, source_folder):
                 print(f"An error occurred while uploading {futures[future]}: {e}")
 
 if __name__ == "__main__":
-    bucket_name = 'wavs-1-05-24-1'  # Replace with your bucket name
+    bucket_name = 'wavs-2-05-24-1'  # Replace with your bucket name
     source_folder = 'outputs'  # Replace with the path to your outputs directory
     upload_files(bucket_name, source_folder)
