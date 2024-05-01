@@ -8,7 +8,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from concurrent.futures import ThreadPoolExecutor
-page_size = 999
+page_size = 50
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Download files from Google Drive based on folder ID and voice ID.")
@@ -78,7 +78,7 @@ def get_files_with_token(creds, folder_id, voice_id, next_page_token=None):
 
         if token and wav_count > 0:
             print("Fetching next batch of files.")
-            get_files_with_token(creds, folder_id, voice_id, token)
+            # get_files_with_token(creds, folder_id, voice_id, token)
         else:
             print("All files processed. Exiting.")
 

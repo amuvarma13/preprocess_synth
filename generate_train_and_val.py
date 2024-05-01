@@ -31,8 +31,8 @@ def split_data(combined_file, train_file, val_file, train_ratio=0.8):
 def main():
     source_dir = 'txts'
     combined_file = 'combined.txt'
-    train_file = 'train.txt'
-    val_file = 'val.txt'
+    train_file = 'train_list.txt'
+    val_file = 'val_list.txt'
     
     # Combine all text files into one without gaps
     combine_text_files(source_dir, combined_file)
