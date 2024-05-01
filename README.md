@@ -56,3 +56,13 @@ python upload_wavs.py
 ```
 
 
+Step 6 On Usage Side
+
+Download all wav files from cloud bucket to folder. 
+
+Run
+
+```
+python mass_download.py
+```
+
