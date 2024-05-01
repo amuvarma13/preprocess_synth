@@ -44,6 +44,13 @@ Step 5 Upload all wav files to storage
 
 Run the script to upload all files flatly to cloud storage:
 
+First we have to add the service account to path. 
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS="service.json"
+```
+
+
 ```
 python upload_wavs.py
 ```
