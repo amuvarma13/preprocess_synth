@@ -3,11 +3,11 @@ import random
 import sys
 import argparse
 from phonemizer import phonemize
-from phonemizer.backend.espeak.wrapper import EspeakWrapper
+# from phonemizer.backend.espeak.wrapper import EspeakWrapper
 
 # Set library path for eSpeak phonemization
-_ESPEAK_LIBRARY = '/opt/homebrew/Cellar/espeak/1.48.04_1/lib/libespeak.1.1.48.dylib'
-EspeakWrapper.set_library(_ESPEAK_LIBRARY)
+# _ESPEAK_LIBRARY = '/opt/homebrew/Cellar/espeak/1.48.04_1/lib/libespeak.1.1.48.dylib'
+# EspeakWrapper.set_library(_ESPEAK_LIBRARY)
 
 speaker_num = random.randint(1000, 9999)
 
