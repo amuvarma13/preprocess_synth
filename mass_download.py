@@ -31,7 +31,7 @@ def download_files(bucket_name, destination_folder):
     blobs = bucket.list_blobs()
 
     # Use ThreadPoolExecutor to download blobs concurrently
-    with ThreadPoolExecutor(max_workers=100) as executor:
+    with ThreadPoolExecutor(max_workers=200) as executor:
         futures = {executor.submit(download_blob, bucket_name, blob.name, destination_folder): blob.name for blob in blobs}
 
         # Process results as they are completed
