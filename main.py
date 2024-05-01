@@ -1,6 +1,7 @@
 import os
 import subprocess
 import concurrent.futures
+import argparse
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -8,14 +9,11 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from concurrent.futures import ThreadPoolExecutor
 
-# Define the output directory and make sure it exists
-output_directory = "outputs"
-page_size = 999
-if not os.path.exists(output_directory):
-    os.makedirs(output_directory)
-
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/drive"]
+def parse_args():
+    parser = argparse.ArgumentParser(description="Download files from Google Drive based on folder ID and voice ID.")
+    parser.add_argument("folder_id", type=str, help="Google Drive folder ID from which to download files.")
+    parser.add_argument("voice_id", type=str, help="Voice ID associated with the files.")
+    return parser.parse_args()
 
 def download_file_subprocess(item, voice_id):
     """Invoke a subprocess to download a file and isolate faults."""
@@ -27,8 +25,13 @@ def download_file_subprocess(item, voice_id):
         print(f"Failed to download {item['name']}: {e}")
         return None
 
-count_wavs = 0
-def main():
+def main(folder_id, voice_id):
+    output_directory = "outputs"
+    page_size = 999
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+
+    SCOPES = ["https://www.googleapis.com/auth/drive"]
 
     creds = None
     if os.path.exists("token.json"):
@@ -41,17 +44,12 @@ def main():
             creds = flow.run_local_server(port=0)
         with open("token.json", "w") as token:
             token.write(creds.to_json())
-    
-    get_files_with_token(creds)
- 
 
-        
+    get_files_with_token(creds, folder_id, voice_id)
 
-def get_files_with_token(creds, next_page_token=None):
+def get_files_with_token(creds, folder_id, voice_id, next_page_token=None):
     try:
         service = build("drive", "v3", credentials=creds)
-        folder_id = '10UczBeUAY6bKYeC5H6AY7CwXbAX5abX3'
-        voice_id = 'pMsXgVXv3BLzUgSXRplE'
         query = f"'{folder_id}' in parents"
         results = service.files().list(
             q=query,
@@ -62,7 +60,6 @@ def get_files_with_token(creds, next_page_token=None):
 
         items = results.get("files", [])
         token = results.get("nextPageToken")
-
         print(f"Found {len(items)} files in the folder. Next token: {token}")
 
         if not items:
@@ -80,7 +77,7 @@ def get_files_with_token(creds, next_page_token=None):
 
         if token and wav_count > 0:
             print("Fetching next batch of files.")
-            get_files_with_token(creds, token)
+            get_files_with_token(creds, folder_id, voice_id, token)
         else:
             print("All files processed. Exiting.")
 
@@ -88,4 +85,5 @@ def get_files_with_token(creds, next_page_token=None):
         print(f"An error occurred: {error}")
 
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    main(args.folder_id, args.voice_id)
